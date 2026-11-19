@@ -75,10 +75,15 @@ def chat_messages():
             return jsonify({'error': 'El mensaje debe tener entre 1 y 500 caracteres.'}), 400
         if not isinstance(sender_id, str) or not sender_id.strip() or len(sender_id) > 80:
             return jsonify({'error': 'Falta un identificador de usuario válido.'}), 400
+        name = payload.get('name')
+        if not isinstance(name, str) or not name.strip():
+            name = 'Visitante'
+        name = name.strip()[:30]
         item = {
             'id': next_id,
             'text': text.strip(),
             'sender_id': sender_id.strip(),
+            'name': name,
             'created_at': now.isoformat(timespec='seconds'),
             '_created': now,
         }
